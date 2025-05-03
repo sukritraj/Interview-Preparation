@@ -1,0 +1,1 @@
+It is used when we need to copy/clone from existing object.
