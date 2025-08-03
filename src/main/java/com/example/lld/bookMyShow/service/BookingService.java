@@ -1,33 +1,29 @@
 package com.example.lld.bookMyShow.service;
 
-import com.example.lld.bookMyShow.entity.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.example.lld.bookMyShow.model.Seat;
+import com.example.lld.bookMyShow.model.Show;
+import com.example.lld.bookMyShow.model.User;
+import com.example.lld.bookMyShow.repository.BookingRepository;
 
 public class BookingService {
-    private static BookingService instance;
-    private final Map<String, Booking> bookings;
+    private BookingRepository bookingRepository = new BookingRepository();
 
-    private BookingService() {
-        bookings = new HashMap<>();
-    }
-
-    public static BookingService getInstance() {
-        if (instance == null) {
-            instance = new BookingService();
+    public void bookTicket(User user, Show show, Seat seat) {
+        if (!seat.isBooked()) {
+            bookingRepository.bookSeat(user, show, seat);
+            System.out.println("Ticket booked successfully for " + user.getName());
+        } else {
+            System.out.println("Seat already booked.");
         }
-        return instance;
     }
 
-    public Booking createBooking(User user, Show show, List<Seat> seats) {
-        seats.forEach(Seat::bookSeat);
-        Payment payment = new Payment(UUID.randomUUID().toString(), show.getPrice() * seats.size());
-        payment.processPayment();
-        Booking booking = new Booking(UUID.randomUUID().toString(), user, show, seats, payment);
-        bookings.put(booking.getBookingId(), booking);
-        return booking;
+    public void cancelTicket(User user, Show show, Seat seat) {
+        if (seat.isBooked()) {
+            bookingRepository.cancelBooking(user, show, seat);
+            System.out.println("Ticket cancelled successfully for " + user.getName());
+        } else {
+            System.out.println("No booking found for this seat.");
+        }
     }
 }
