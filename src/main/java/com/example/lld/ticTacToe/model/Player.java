@@ -1,4 +1,4 @@
-package com.example.lld.ticTacToe;
+package com.example.lld.ticTacToe.model;
 
 public class Player {
     private final String id;

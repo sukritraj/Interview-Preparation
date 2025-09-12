@@ -1,4 +1,4 @@
-package com.example.lld.ticTacToe;
+package com.example.lld.ticTacToe.model;
 
 public enum Mark {
     X,O,EMPTY
